@@ -1,0 +1,20 @@
+{
+    "source": [
+      "aws.ecr"
+    ],
+    "detail-type": [
+      "ECR Image Scan"
+    ],
+    "detail": {
+      "finding-severity-counts": {
+        "HIGH": [
+          {
+            "numeric": [
+              ">",
+              0
+            ]
+          }
+        ]
+      }
+    }
+  }
