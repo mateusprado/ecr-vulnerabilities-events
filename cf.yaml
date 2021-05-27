@@ -1,0 +1,58 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: This is about ECR images scan vulnerabilities events for Amazon Eventbridge. It is a option to monitor and automate events collection.
+Resources:
+  ECRScanEventsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: "ECRScanEventsTopic"
+
+  ECRScanCriticalEventRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: CRITICAL Events Rule for ECR Image Scan
+      EventPattern:
+        source:
+          - aws.ecr
+        detail-type: 
+          - "ECR Image Scan"
+        detail: 
+          finding-severity-counts:
+            CRITICAL: [{numeric: ['>', 0]}]
+      State: ENABLED
+      Targets:
+        - Arn: !Ref ECRScanEventsTopic
+          Id: ECRScanEventsTopicCritical
+
+  ECRScanHighEventRule:
+      Type: AWS::Events::Rule
+      Properties:
+        Description: HIGH Events Rule for ECR Image Scan
+        EventPattern:
+          source:
+            - aws.ecr
+          detail-type: 
+            - "ECR Image Scan"
+          detail: 
+            finding-severity-counts:
+              HIGH: [{numeric: ['>', 0]}]
+        State: ENABLED
+        Targets:
+          - Arn: !Ref ECRScanEventsTopic
+            Id: ECRScanEventsTopicHigh
+
+  ECRScanMediumEventRule:
+      Type: AWS::Events::Rule
+      Properties:
+        Description: MEDIUM Events Rule for ECR Image Scan
+        EventPattern:
+          source:
+            - aws.ecr
+          detail-type: 
+            - "ECR Image Scan"
+          detail: 
+            finding-severity-counts:
+              MEDIUM: [{numeric: ['>', 0]}]
+        State: ENABLED
+        Targets:
+          - Arn: !Ref ECRScanEventsTopic
+            Id: ECRScanEventsTopicMedium
